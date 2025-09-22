@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract NFTMarketplace is ReentrancyGuard, Ownable {
@@ -28,6 +28,8 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
     event ItemSold(uint256 indexed listingId, address buyer, uint256 price);
     event BidPlaced(uint256 indexed listingId, address bidder, uint256 amount);
     event AuctionEnded(uint256 indexed listingId, address winner, uint256 amount);
+
+    constructor() Ownable(msg.sender) {}
 
     function listItem(
         address nftContract,

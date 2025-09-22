@@ -9,20 +9,22 @@ async function main() {
     console.log("Deploying NFTCollection...");
     const NFTCollection = await hre.ethers.getContractFactory("NFTCollection");
     const nftCollection = await NFTCollection.deploy();
-    await nftCollection.deployed();
-    console.log("NFTCollection deployed to:", nftCollection.address);
+    await nftCollection.waitForDeployment();
+    const nftCollectionAddress = await nftCollection.getAddress();
+    console.log("NFTCollection deployed to:", nftCollectionAddress);
 
     // Deploy Marketplace
     console.log("Deploying NFTMarketplace...");
     const NFTMarketplace = await hre.ethers.getContractFactory("NFTMarketplace");
     const marketplace = await NFTMarketplace.deploy();
-    await marketplace.deployed();
-    console.log("NFTMarketplace deployed to:", marketplace.address);
+    await marketplace.waitForDeployment();
+    const marketplaceAddress = await marketplace.getAddress();
+    console.log("NFTMarketplace deployed to:", marketplaceAddress);
 
     // Save contract addresses
     const contractAddresses = {
-        nftCollection: nftCollection.address,
-        marketplace: marketplace.address,
+        nftCollection: nftCollectionAddress,
+        marketplace: marketplaceAddress,
         network: hre.network.name,
         deployedAt: new Date().toISOString()
     };
@@ -65,8 +67,8 @@ async function main() {
 
     // Verification info
     console.log("\nTo verify contracts on Etherscan, run:");
-    console.log(`npx hardhat verify --network ${hre.network.name} ${nftCollection.address}`);
-    console.log(`npx hardhat verify --network ${hre.network.name} ${marketplace.address}`);
+    console.log(`npx hardhat verify --network ${hre.network.name} ${nftCollectionAddress}`);
+    console.log(`npx hardhat verify --network ${hre.network.name} ${marketplaceAddress}`);
 }
 
 main().catch((error) => {
